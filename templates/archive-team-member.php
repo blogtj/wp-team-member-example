@@ -12,6 +12,12 @@ get_header(); ?>
 		<?php
 		// Start the loop.
 		$i= 0;
+	    query_posts(array(
+	        'post_type' 	 => 'team-member',
+	        'showposts' 	 => -1,
+		    'orderby'        => 'title',
+		    'order'          => 'ASC'
+	    ) );
 		while ( have_posts() ) : the_post();
 			$i++;
 		?>
