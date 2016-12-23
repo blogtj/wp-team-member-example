@@ -3,7 +3,9 @@
     display:block;
     clear:both;
 }
-
+.editor {
+    display: none;
+}
 #teammembers .col {
 	float: left;
 	text-align: center;

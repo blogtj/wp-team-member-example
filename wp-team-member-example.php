@@ -181,40 +181,8 @@ wp_enqueue_style('css_plugin', plugins_url ( 'css/style.css', __FILE__ ), array(
 // add javascript - holder - dummy images
 wp_enqueue_script( 'script1', plugins_url ( 'js/holder.min.js', __FILE__ ) , true );
 
-
-
-// add javascript for readmore and readless
-function javascript_readmore() {
-	wp_enqueue_script( 'script2', plugins_url ( 'js/readmore.js', __FILE__ ) , '' , '1.0' , true );
-
-	$args = array(
-	    'post_type'		=> 'team-member',
-	    'showposts'		=> -1,
-	    'orderby'		=> 'title',
-	    'order'			=> 'ASC'
-	);
-	$posts_array = get_posts( $args );
-
-	$array = array();
-
-	$i = 0;
-
-	foreach ( $posts_array as $post ) :
-		$array[ $i ] = $post->ID;
-		$i++;
-	endforeach;
-
-	$script_params = array(
-	   'howmany' => $i,
-	   'posts' => $array
-	);
-
-	wp_localize_script( 'script2', 'script_params', $script_params );
-}
-
-add_action( 'wp_enqueue_scripts', 'javascript_readmore' );
-
-
+// add javascript that show or hide readmore text
+wp_enqueue_script( 'script2', plugins_url ( 'js/readmorereadless.js', __FILE__ ) , true );
 
 //post thumbnail support
 add_action( 'after_setup_theme', 'theme_setup' );
