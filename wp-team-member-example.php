@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Team Member
+ * Plugin Name: Team Member Wordpress
  * Plugin URI: http://www.wordpress.com
  * Description: This plugin create custom post team members
  * Version: 1.0.0

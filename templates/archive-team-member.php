@@ -9,12 +9,13 @@ get_header(); ?>
 <div id="primary" class="content-area">
 	<main id="main" class="site-main" role="main">
 		<div id="teammembers">
+
 		<?php
 		// Start the loop.
 		$i = 0;
 	    query_posts(array(
 	        'post_type'		=> 'team-member',
-	        'showposts'		=> -1,
+	        'showposts'		=> 12,
 		    'orderby'		=> 'title',
 		    'order'			=> 'ASC'
 	    ) );
@@ -62,25 +63,6 @@ get_header(); ?>
 					</br>
 					<a class="btn btn-primary readless_<?php echo $post->ID; ?>"  href="javascript:void(0)" onclick="readMore_hide(<?php echo $post->ID; ?>);">Read Less</a>
 				</div>
-
-<!--
-				<script>
-					jQuery(document).ready(function( $ ) {
-
-						$( ".content_<?php echo $post->ID; ?>" ).hide();
-						$( ".toggle_<?php echo $post->ID; ?>" ).click(function(){
-						    $( ".content_<?php echo $post->ID; ?>" ).show();
-						    $( ".toggle_<?php echo $post->ID; ?>" ).hide();
-						});
-
-						$( ".readless_<?php echo $post->ID; ?>" ).click(function(){
-						    $( ".content_<?php echo $post->ID; ?>" ).hide();
-						    $( ".toggle_<?php echo $post->ID; ?>" ).show();
-						});
-
-					});
-				</script>
--->
 			</div>
 		<?php if ( $i%3 == 0 ) echo '<div class="clearfix"></div>'; ?>
 
