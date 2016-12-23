@@ -11,34 +11,37 @@ get_header(); ?>
 		<div id="teammembers">
 		<?php
 		// Start the loop.
-		$i= 0;
+		$i = 0;
 	    query_posts(array(
-	        'post_type' 	 => 'team-member',
-	        'showposts' 	 => -1,
-		    'orderby'        => 'title',
-		    'order'          => 'ASC'
+	        'post_type'		=> 'team-member',
+	        'showposts'		=> -1,
+		    'orderby'		=> 'title',
+		    'order'			=> 'ASC'
 	    ) );
+
 		while ( have_posts() ) : the_post();
-			$i++;
 		?>
+			<?php $i++; ?>
+
 			<div class="col">
 				<div class="avatar">
 					<?php
 			        echo '<a href="' . get_permalink( $_post->ID ) . '" title="' . esc_attr( $_post->post_title ) . '">';
 				    if ( has_post_thumbnail( $_post->ID ) ) {
 				        echo get_the_post_thumbnail( $_post->ID, 'mythumb380x180', array( 'class' => 'imgresponsive' ) );
-				        }
-				    else{
-					    echo "<img src='holder.js/320x180'>";
+				    } else{
+					    echo '<img src="holder.js/320x180">';
 				    }
 					echo '</a>';
 					?>
 				</div>
+
 				<div class="title">
 					<a href="<?php the_permalink(); ?>" title="<?php esc_attr( $_post->post_title ); ?>">
 						<?php the_title(); ?>
 					</a>
 				</div>
+
 				<div class="position">
 					<?php echo get_post_meta($post->ID, 'position', true ); ?>
 				</div>
@@ -60,25 +63,28 @@ get_header(); ?>
 					<a class="btn btn-primary readless_<?php echo $post->ID; ?>">Read Less</a>
 				</div>
 
+<!--
 				<script>
 					jQuery(document).ready(function( $ ) {
 
 						$( ".content_<?php echo $post->ID; ?>" ).hide();
-						$(".toggle_<?php echo $post->ID; ?>").click(function(){
-						    $(".content_<?php echo $post->ID; ?>").show();
-						    $(".toggle_<?php echo $post->ID; ?>").hide();
+						$( ".toggle_<?php echo $post->ID; ?>" ).click(function(){
+						    $( ".content_<?php echo $post->ID; ?>" ).show();
+						    $( ".toggle_<?php echo $post->ID; ?>" ).hide();
 						});
-						$(".readless_<?php echo $post->ID; ?>").click(function(){
-						    $(".content_<?php echo $post->ID; ?>").hide();
-						    $(".toggle_<?php echo $post->ID; ?>").show();
+
+						$( ".readless_<?php echo $post->ID; ?>" ).click(function(){
+						    $( ".content_<?php echo $post->ID; ?>" ).hide();
+						    $( ".toggle_<?php echo $post->ID; ?>" ).show();
 						});
 
 					});
 				</script>
+-->
 			</div>
+		<?php if ( $i%3 == 0 ) echo '<div class="clearfix"></div>'; ?>
+
 		<?php
-			if($i%3==0)
-				echo "<div class='clearfix'></div>";
 		// End of the loop.
 		endwhile;
 		?>

@@ -7,6 +7,7 @@
  * Author: TJ
  * Author URI: http://www.wordpress.com
  * License: GPL2
+ * Text Domain: wp-team-member-example
  */
 
 // create custom post
@@ -120,26 +121,26 @@ if(function_exists("register_field_group"))
 function custom_taxonomy() {
 
 	$labels = array(
-		'name'                       => _x( 'Departments', 'Taxonomy General Name', 'text_domain' ),
-		'singular_name'              => _x( 'Department', 'Taxonomy Singular Name', 'text_domain' ),
-		'menu_name'                  => __( 'Taxonomy', 'text_domain' ),
-		'all_items'                  => __( 'All Items', 'text_domain' ),
-		'parent_item'                => __( 'Parent Item', 'text_domain' ),
-		'parent_item_colon'          => __( 'Parent Item:', 'text_domain' ),
-		'new_item_name'              => __( 'New Item Name', 'text_domain' ),
-		'add_new_item'               => __( 'Add New Item', 'text_domain' ),
-		'edit_item'                  => __( 'Edit Item', 'text_domain' ),
-		'update_item'                => __( 'Update Item', 'text_domain' ),
-		'view_item'                  => __( 'View Item', 'text_domain' ),
-		'separate_items_with_commas' => __( 'Separate items with commas', 'text_domain' ),
-		'add_or_remove_items'        => __( 'Add or remove items', 'text_domain' ),
-		'choose_from_most_used'      => __( 'Choose from the most used', 'text_domain' ),
-		'popular_items'              => __( 'Popular Items', 'text_domain' ),
-		'search_items'               => __( 'Search Items', 'text_domain' ),
-		'not_found'                  => __( 'Not Found', 'text_domain' ),
-		'no_terms'                   => __( 'No items', 'text_domain' ),
-		'items_list'                 => __( 'Items list', 'text_domain' ),
-		'items_list_navigation'      => __( 'Items list navigation', 'text_domain' ),
+		'name'                       => _x( 'Departments', 'Taxonomy General Name' ),
+		'singular_name'              => _x( 'Department', 'Taxonomy Singular Name' ),
+		'menu_name'                  => __( 'Taxonomy' ),
+		'all_items'                  => __( 'All Items' ),
+		'parent_item'                => __( 'Parent Item' ),
+		'parent_item_colon'          => __( 'Parent Item:' ),
+		'new_item_name'              => __( 'New Item Name' ),
+		'add_new_item'               => __( 'Add New Item' ),
+		'edit_item'                  => __( 'Edit Item' ),
+		'update_item'                => __( 'Update Item' ),
+		'view_item'                  => __( 'View Item' ),
+		'separate_items_with_commas' => __( 'Separate items with commas' ),
+		'add_or_remove_items'        => __( 'Add or remove items' ),
+		'choose_from_most_used'      => __( 'Choose from the most used' ),
+		'popular_items'              => __( 'Popular Items' ),
+		'search_items'               => __( 'Search Items' ),
+		'not_found'                  => __( 'Not Found' ),
+		'no_terms'                   => __( 'No items' ),
+		'items_list'                 => __( 'Items list' ),
+		'items_list_navigation'      => __( 'Items list navigation' ),
 	);
 	$args = array(
 		'labels'                     => $labels,
@@ -157,33 +158,69 @@ add_action( 'init', 'custom_taxonomy', 0 );
 
 
 //custom template page for archive team-member
-add_filter('archive_template','teammember_archive');
-function teammember_archive($template){
-  if(is_post_type_archive('team-member')){
-    $theme_files = array('archive-team-member.php');
-    $exists_in_theme = locate_template($theme_files, false);
-    if($exists_in_theme == ''){
-      return plugin_dir_path(__FILE__) . '/templates/archive-team-member.php';
+add_filter( 'archive_template', 'teammember_archive' );
+
+function teammember_archive( $template ){
+
+  if ( is_post_type_archive( 'team-member' ) ){
+    $theme_files = array( 'archive-team-member.php' );
+    $exists_in_theme = locate_template( $theme_files, false );
+    if ( $exists_in_theme == '' ) {
+
+      return plugin_dir_path( __FILE__ ) . '/templates/archive-team-member.php';
     }
   }
+
   return $template;
 }
 
 
 // add css
-wp_enqueue_style('css_plugin', plugins_url ( 'css/style.css', __FILE__ ), array(), time(0));
+wp_enqueue_style('css_plugin', plugins_url ( 'css/style.css', __FILE__ ), array(), time( 0 ) );
 
-// add javascript
-wp_enqueue_script( 'script', plugins_url ( 'js/holder.min.js', __FILE__ ) , true);
+// add javascript - holder - dummy images
+wp_enqueue_script( 'script1', plugins_url ( 'js/holder.min.js', __FILE__ ) , true );
+
+
+
+// add javascript for readmore and readless
+function javascript_readmore() {
+	wp_enqueue_script( 'script2', plugins_url ( 'js/readmore.js', __FILE__ ) , '' , '1.0' , true );
+
+	$args = array(
+	    'post_type'		=> 'team-member',
+	    'showposts'		=> -1,
+	    'orderby'		=> 'title',
+	    'order'			=> 'ASC'
+	);
+	$posts_array = get_posts( $args );
+
+	$array = array();
+
+	$i = 0;
+
+	foreach ( $posts_array as $post ) :
+		$array[ $i ] = $post->ID;
+		$i++;
+	endforeach;
+
+	$script_params = array(
+	   'howmany' => $i,
+	   'posts' => $array
+	);
+
+	wp_localize_script( 'script2', 'script_params', $script_params );
+}
+
+add_action( 'wp_enqueue_scripts', 'javascript_readmore' );
+
 
 
 //post thumbnail support
 add_action( 'after_setup_theme', 'theme_setup' );
 
 function theme_setup() {
-      if ( function_exists( 'add_theme_support' ) ) {
-        add_image_size( 'mythumb380x180', 380, 180, TRUE);
+	if ( function_exists( 'add_theme_support' ) ) {
+		add_image_size( 'mythumb380x180', 380, 180, TRUE );
     }
 }
-
-?>
