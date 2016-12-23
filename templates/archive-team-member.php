@@ -1,7 +1,7 @@
 <?php
 /**
  * The template for displaying team members
- *
+ * test
  */
 
 get_header(); ?>
@@ -60,7 +60,7 @@ get_header(); ?>
 
 				<div class="editor content_<?php echo $post->ID; ?>">
 					<?php  echo get_the_content() ?>
-					</br>
+					<br/>
 					<a class="btn btn-primary readless_<?php echo $post->ID; ?>"  href="javascript:void(0)" onclick="readMore_hide(<?php echo $post->ID; ?>);">Read Less</a>
 				</div>
 			</div>
